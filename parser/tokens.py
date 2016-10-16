@@ -40,9 +40,9 @@ class TokenStream:
         :param list(str) skip: list of token types to skip as
             whitespace
         """
+        self.skip_types = skip
         self.tokens = iter(lexer)
         self.current_token = self.next_token()
-        self.skip_types = skip
         self.empty = False
 
     def peek(self):
@@ -71,6 +71,20 @@ class TokenStream:
 
         # Return the token we just ate
         return old_token
+
+    def expect(self, tag):
+        """
+        Eat the next token. if it does not match the
+        expected tag, throw a SyntaxError
+        """
+        # Autocannibalism!
+        token = self.eat()
+
+        # If we ate the wrong thing, throw up a SyntaxError
+        if token.tag != tag:
+            raise SyntaxError('Expected {}, got {}'.format(tag, token))
+
+        return token
 
     def next_token(self):
         """

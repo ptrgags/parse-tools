@@ -39,8 +39,7 @@ class Lexer:
                 else:
                     continue
             if error:
-                raise Exception((
-                    'Syntax Error:\n'
+                raise SyntaxError((
                     'Invallid token in input "{}"\n'
                     'starting at position {}: "{}"'.format(
                         self.text, self.pos, self.text[self.pos:])))
